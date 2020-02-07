@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.model.ReturnCode;
+import com.cos.blog.model.user.User;
 import com.cos.blog.model.user.dto.ReqJoinDto;
+import com.cos.blog.model.user.dto.ReqLoginDto;
 import com.cos.blog.repository.UserRepository;
 
 @Service
@@ -14,6 +16,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	// result = 0 비정상, 1 정상, -1 DB 오류, -2 아이디 중복
 	@Transactional
 	public int 회원가입(ReqJoinDto dto) {
 		try {
@@ -28,5 +31,12 @@ public class UserService {
 			throw new RuntimeException();
 
 		}
+	}
+	
+	public User 로그인(ReqLoginDto dto) {
+		return userRepository.findByUsernameAndPassword(dto);
+		
+		
+		
 	}
 }
