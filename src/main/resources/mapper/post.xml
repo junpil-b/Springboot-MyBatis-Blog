@@ -5,8 +5,8 @@
 <mapper namespace="com.cos.blog.repository.PostRepository">
 	<!-- 함수 연결,  id = 함수명  repository 참조-->
 
-	<select id="findAll" resultType="com.cos.blog.model.Post">
-		select * from post 
+	<select id="findAll" resultType="com.cos.blog.model.post.Post">
+		select * from post order by id desc
 	</select>
 </mapper>
 <!-- https://mybatis.org/mybatis-3/getting-started.html -->

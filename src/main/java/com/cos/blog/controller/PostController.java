@@ -14,16 +14,16 @@ public class PostController {
 	
 	@GetMapping("/post/{id}")
 	public String post() {
-		return "post/detail";
+		return "/post/detail";
 	}
 	
 	@GetMapping("/post/write")
 	public String write() {
-		return "post/write";
+		return "/post/write";
 	}
 	
 	@GetMapping("/post/update/{id}")
 	public String update() {
-		return "post/update";
+		return "/post/update";
 	}
 }

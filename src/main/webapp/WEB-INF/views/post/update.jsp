@@ -11,7 +11,7 @@
 
 		<div class="form-group">
 			<label for="content">내용</label>
-			<textarea class="form-control" rows="5" id="content" value ="내용입니다"></textarea>
+			<textarea class="form-control" rows="5" id="content">내용입니다</textarea>
 		</div>
 	</form>
 

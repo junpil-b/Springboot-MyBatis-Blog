@@ -6,8 +6,17 @@
 
 	<!-- 함수 연결,  id = 함수명  repository 참조-->
 
-	<select id="findAll" resultType="com.cos.blog.model.User">
+	<select id="findAll" resultType="com.cos.blog.model.user.User">
 		select * from user order by id desc
+	</select>
+	
+	<insert id ="save">
+		insert into user(username, password, email, createDate) 
+		values(#{username}, #{password}, #{email}, now())
+	</insert>
+	
+	<select id ="findByUsername" resultType = "int">
+		select count(*) from user where username = #{username}
 	</select>
 </mapper>
 <!-- https://mybatis.org/mybatis-3/getting-started.html -->

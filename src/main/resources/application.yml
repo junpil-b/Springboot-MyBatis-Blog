@@ -10,7 +10,7 @@ spring:
       suffix: .jsp
       
   datasource:
-    url: jdbc:mysql://localhost:3306/spring?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
     username: blog
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,4 +21,4 @@ spring:
       max-file-size: 1MB
       
 file:
-  path: C:/src/springbootWork/com.cos.blog/media/
+  path: C:/src/springbootWork/springboot-blog/media/

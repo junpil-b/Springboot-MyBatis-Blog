@@ -14,11 +14,9 @@
 		</div>
 
 		<div class="card-footer">
-			<div class="card-footer">
-				<button id="post--update--submit" class="btn btn-primary">수정</button>
-				<button id="post--delete--submit" class="btn btn-danger">삭제</button>
-				<a href="/" class="btn btn-success">목록</a>
-			</div>
+			<button id="post--update--submit" class="btn btn-primary">수정</button>
+			<button id="post--delete--submit" class="btn btn-danger">삭제</button>
+			<a href="/" class="btn btn-success">목록</a>
 		</div>
 	</div>
 
@@ -44,11 +42,13 @@
 
 			<div class="comment--items card-body">
 				<div class="comment--item">
-					<span class="comment--content">댓글 내용</span> <span id="comment--delete--submit" value="1">X</span>
+					<span class="comment--content">댓글 내용</span> 
+					<span id="comment--delete--submit" value="1">X</span>
 				</div>
 
 				<div class="comment--item">
-					<span class="comment--content">댓글 내용</span> <span id="comment--delete--submit" value="2">X</span>
+					<span class="comment--content">댓글 내용</span>
+					 <span id="comment--delete--submit" value="2">X</span>
 				</div>
 			</div>
 		</div>
