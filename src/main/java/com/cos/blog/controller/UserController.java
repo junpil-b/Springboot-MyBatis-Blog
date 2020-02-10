@@ -57,7 +57,7 @@ public class UserController {
 
 		User principal = (User) session.getAttribute("principal");
 
-		if (principal != null) { // 로그인 성공
+		if (principal.getId() == id) { // 로그인 성공
 				return "/user/profile";
 			} else {
 				return "/user/login"; // 작성자 X, 권한 X
@@ -93,7 +93,7 @@ public class UserController {
 		// 응답 시 서비스 호출
 		User principal = userService.로그인(dto);
 		
-		if (principal == null) {
+		if (principal != null) {
 			session.setAttribute("principal", principal);
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		} else {

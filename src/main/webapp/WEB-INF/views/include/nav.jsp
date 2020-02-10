@@ -28,21 +28,16 @@
 
 				<c:choose>
 					<c:when test="${not empty sessionScope.principal}">
-						<li class="nav-item">
-						<a class="nav-link" href="/post/write">글쓰기</a></li>
+						<li class="nav-item"><a class="nav-link" href="/post/write">글쓰기</a></li>
 
-						<li class="nav-item">
-						<a class="nav-link" href="/user/profile/${sessionScope.principal.id}">회원정보수정</a></li>
-						
-						<li class="nav-item">
-						<a class="nav-link" href="/user/logout">로그아웃</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/profile/${sessionScope.principal.id}">정보수정</a></li>
+
+						<li class="nav-item"><a class="nav-link" href="/user/logout">로그아웃</a></li>
 					</c:when>
 					<c:otherwise>
-						<li class="nav-item">
-						<a class="nav-link" href="/user/join">회원가입</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/join">JOIN</a></li>
 
-						<li class="nav-item">
-						<a class="nav-link" href="/user/login">로그인</a></li>
+						<li class="nav-item"><a class="nav-link" href="/user/login">LOGIN</a></li>
 					</c:otherwise>
 				</c:choose>
 
