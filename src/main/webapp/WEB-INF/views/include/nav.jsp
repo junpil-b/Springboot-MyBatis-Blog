@@ -15,7 +15,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-	<nav class="navbar navbar-expand-md bg-info navbar-dark">
+	<nav class="navbar navbar-expand-md bg-success navbar-dark">
 		<!-- Brand -->
 		<a class="navbar-brand" href="/">Cos</a>
 
