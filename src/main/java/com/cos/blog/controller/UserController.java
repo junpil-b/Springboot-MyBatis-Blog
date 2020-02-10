@@ -9,7 +9,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -34,21 +33,21 @@ import com.cos.blog.service.UserService;
 
 @Controller
 public class UserController {
-
+	
 	@Value("${file.path}")
-	private String fileRealPath; // 서버 배포시 경로 변경해야된다
-
+	private String fileRealPath;  // 서버에 배포하면 경로 변경해야함.
+	
 	@Autowired
 	private UserService userService;
-
+	
 	@Autowired
 	private HttpSession session;
-
+	
 	@GetMapping("/user/join")
 	public String join() {
 		return "/user/join";
 	}
-
+	
 	@GetMapping("/user/login")
 	public String login() {
 		return "/user/login";
@@ -59,27 +58,30 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/";
 	}
-
+	
 	// 인증, 동일인 체크
 	@GetMapping("/user/profile/{id}")
-	public String profile(@PathVariable int id) {
-
+	public  String profile(@PathVariable int id) {
+		
 		User principal = (User) session.getAttribute("principal");
-
-		if (principal.getId() == id) {
+		
+		System.out.println("UserController : profile :  "+principal.getProfile());
+		if(principal.getId() == id) {
 			return "/user/profile";
-		} else {
+		}else {
 			// 잘못된 접근입니다. 권한이 없습니다.
 			return "/user/login";
 		}
-
+	
 	}
-// form:form 사용
+	
+	// form:form 사용함!!
 	@PutMapping("/user/profile")
-	public @ResponseBody String profile(@RequestParam int id, @RequestParam String password,
-			@RequestParam MultipartFile profile) {
-		// 'profile' 처럼 이름이 같으면 배열로 받는다
-
+	public @ResponseBody String profile(
+			@RequestParam int id, 
+			@RequestParam String password,
+			@RequestParam MultipartFile profile){
+		
 		UUID uuid = UUID.randomUUID();
 		String uuidFilename = uuid+"_"+profile.getOriginalFilename();
 		
@@ -92,16 +94,17 @@ public class UserController {
 		}
 		
 		int result = userService.수정완료(id, password, uuidFilename);
+		
 		StringBuffer sb = new StringBuffer();
 		if(result == 1) {
 			sb.append("<script>");
-			sb.append("alert ('수정완료')");
+			sb.append("alert('수정완료');");
 			sb.append("location.href='/';");
 			sb.append("</script>");
 			return sb.toString();
 		}else {
 			sb.append("<script>");
-			sb.append("alert ('수정실패')");
+			sb.append("alert('수정실패');");
 			sb.append("history.back();");
 			sb.append("</script>");
 			return sb.toString();
@@ -109,36 +112,41 @@ public class UserController {
 
 	}
 	
-
 	// 메시지 컨버터(Jackson Mapper)는 request받을 때 setter로 호출한다.
 	@PostMapping("/user/join")
 	public ResponseEntity<?> join(@Valid @RequestBody ReqJoinDto dto, BindingResult bindingResult) {
-
+		
 		int result = userService.회원가입(dto);
-
-		if (result == ReturnCode.아이디중복) {
+		
+		if(result == ReturnCode.아이디중복) {
 			return new ResponseEntity<RespCM>(new RespCM(ReturnCode.아이디중복, "아이디중복"), HttpStatus.OK);
-		} else if (result == ReturnCode.성공) {
+		}else if(result == ReturnCode.성공) {
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
-		} else {
+		}else {
 			return new ResponseEntity<RespCM>(new RespCM(500, "fail"), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}	
 	}
-
+	
 	@PostMapping("/user/login")
-	public ResponseEntity<?> login(@Valid @RequestBody ReqLoginDto dto, BindingResult bindingResult) {
-
+	public ResponseEntity<?> login(
+			@Valid @RequestBody ReqLoginDto dto, 
+			BindingResult bindingResult
+			) {
+		
 		// request 검증 = AOP로 처리할 예정
-
+		
 		// 서비스 호출
 		User principal = userService.로그인(dto);
 
-		if (principal != null) {
+		if(principal != null) {
 			session.setAttribute("principal", principal);
 			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
-		} else {
+		}else {
 			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
 		}
-
+		
 	}
 }
+
+
+
