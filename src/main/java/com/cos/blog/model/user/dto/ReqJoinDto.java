@@ -14,18 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReqJoinDto {
 	
-	@Pattern(regexp = "^[a-zA-Z0-9]*$", message="유저네임에 한글을 입력할 수 없다.")
-	// 적힌 문자만 사용 가능? -> 한글 사용 불가
-	@Size(max=15, message ="유저네임의 길이가 잘못됐습니다.")
-	@NotBlank(message = "유저네임을 입력하세요")
+	@Pattern(regexp = "^[a-zA-Z0-9]*$", message = "유저네임에 한글이 입력될 수 없습니다.")
+	@Size(max=15, message = "유저네임의 길이가 잘못되었습니다.")
+	@NotBlank(message = "유저네임을 입력하세요.")
 	private String username;
 	
-	@Size(max=15, message ="비밀번호의 길이가 잘못됐습니다.")
-	@NotBlank(message = "비밀번호를 입력하세요")
+	@Size(max=15, message = "패스워드의 길이가 잘못되었습니다.")
+	@NotBlank(message = "패스워드를 입력하세요.")
 	private String password;
 	
-	@Size(min=5, max=30, message ="이메일 길이가 잘못됐습니다.")
+	@Size(max=30, message = "이메일이 길이가 잘못되었습니다.")
 	@Email(message = "이메일 양식이 틀렸습니다.")
+	@NotBlank(message = "이메일을 입력하세요.")
 	private String email;
-	
 }

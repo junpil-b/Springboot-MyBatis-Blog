@@ -3,47 +3,125 @@ package com.cos.blog.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.cos.blog.model.RespCM;
+import com.cos.blog.model.post.dto.ReqUpdateDto;
+import com.cos.blog.model.post.dto.ReqWriteDto;
 import com.cos.blog.model.user.User;
+import com.cos.blog.service.PostService;
+
+// 시큐리티 구현 완료
 
 @Controller
 public class PostController {
 
 	@Autowired
-	// 인증 확인
 	private HttpSession session;
+	
+	@Autowired
+	private PostService postService;
+	
+	@GetMapping({"", "/", "/post"})
+	public String posts(Model model) {
+		// model = RequestDispatcher + request.setAttribute
 
-	@GetMapping({ "", "/", "/post" })
-	public String posts() {
-		// ViewResolver 관여
+		model.addAttribute("posts", postService.목록보기());
+		
 		return "/post/list";
 	}
-
+	
 	@GetMapping("/post/{id}")
 	public String post() {
 		return "/post/detail";
 	}
-
-	// 인증 체크 -> 세션이 있는지만 확인
+	
+	// 인증 체크
 	@GetMapping("/post/write")
 	public String write() {
 		return "/post/write";
 	}
-
-	// 인증, 작성자 확인
-	@GetMapping("/post/update/{id}")
-	public String update(@PathVariable int postId, @RequestParam int userId) {
+	
+	// 인증 체크
+	@PostMapping("/post/write")
+	public ResponseEntity<?> write(@RequestBody ReqWriteDto dto) {
+		
 		User principal = (User) session.getAttribute("principal");
-// postId를 select 해서 post 가져오기 필요 -> model에 담기 필요		
-
-		if (principal.getId() == userId) {
-			return "/post/login";
+		dto.setUserId(principal.getId());
+		
+		int result = postService.글쓰기(dto);
+		
+		if(result == 1) {
+			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);	
+		}else {
+			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
 		}
-		return "/user/update";
-
+		
+		
+	}
+	
+	// 인증 체크
+	@GetMapping("/post/detail/{id}")
+	public String detail(@PathVariable int id, Model model) {
+		
+		model.addAttribute("post", postService.상세보기(id));
+		
+		return "/post/detail";
+	}
+	
+	@DeleteMapping("/post/delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable int id){
+		
+		int result = postService.삭제하기(id);
+		
+		if(result == 1) {
+			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);	
+		}else if(result == -3) {
+			return new ResponseEntity<RespCM>(new RespCM(403, "fail"), HttpStatus.FORBIDDEN);
+		}else {
+			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	// 인증 체크, 동일인 체크
+	@GetMapping("/post/update/{id}")
+	public String update(@PathVariable int id, Model model) {
+		
+		// postId 로 select 해서 post 가져오기 필요 - Model에 담기 필요
+		model.addAttribute("post", postService.수정하기(id));
+			
+		return "/post/update";
+	}
+	
+	
+	@PutMapping("/post/update")
+	public ResponseEntity<?> update(@RequestBody ReqUpdateDto dto){
+		
+		int result = postService.수정완료(dto);
+		
+		if(result == 1) {
+			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);	
+		}else if(result == -3) {
+			return new ResponseEntity<RespCM>(new RespCM(403, "fail"), HttpStatus.FORBIDDEN);
+		}else {
+			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
+		}
 	}
 }
+
+
+
+
+
+
+

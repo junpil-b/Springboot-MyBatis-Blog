@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RespCM {
-	
 	private int statusCode;
 	private String msg;
 }

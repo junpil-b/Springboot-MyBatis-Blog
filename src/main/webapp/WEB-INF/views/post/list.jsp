@@ -1,36 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ include file="../include/nav.jsp"%>
+<%@include file="../include/nav.jsp"%>
 
 <div class="container">
-	<table class="table table-dark table-hover">
+
+	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>Firstname</th>
-				<th>Lastname</th>
-				<th>Email</th>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일자</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>John</td>
-				<td>Doe</td>
-				<td>john@example.com</td>
-			</tr>
-			<tr>
-				<td>Mary</td>
-				<td>Moe</td>
-				<td>mary@example.com</td>
-			</tr>
-			<tr>
-				<td>July</td>
-				<td>Dooley</td>
-				<td>july@example.com</td>
-			</tr>
+			<c:forEach var="post" items="${posts}">
+				<tr>
+					<td>${post.id}</td>
+					<td><a href="/post/detail/${post.id}">${post.title}</a></td>
+					<td>${post.username}</td>
+					<td>${post.createDate}</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 </div>
 
-<%@ include file="../include/footer.jsp"%>
-
-
+<%@include file="../include/footer.jsp"%>

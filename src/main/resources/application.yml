@@ -8,17 +8,17 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-      
+
   datasource:
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
     username: blog
     password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+    driver-class-name: com.mysql.cj.jdbc.Driver 
+      
   servlet:
     multipart:
       enabled: true
-      max-file-size: 1MB
+      max-file-size: 1MB    
       
 file:
   path: C:/src/springbootWork/springboot-blog/media/

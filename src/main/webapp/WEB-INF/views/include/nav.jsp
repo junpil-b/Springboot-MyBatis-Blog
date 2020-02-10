@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,7 @@
 <title>블로그</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -28,23 +30,27 @@
 
 				<c:choose>
 					<c:when test="${not empty sessionScope.principal}">
-						<li class="nav-item"><a class="nav-link" href="/post/write">글쓰기</a></li>
+						<li class="nav-item">
+						<a class="nav-link" href="/post/write">글쓰기</a></li>
 
-						<li class="nav-item"><a class="nav-link" href="/user/profile/${sessionScope.principal.id}">정보수정</a></li>
-
-						<li class="nav-item"><a class="nav-link" href="/user/logout">로그아웃</a></li>
+						<li class="nav-item">
+						<a class="nav-link" href="/user/profile/${sessionScope.principal.id}">회원정보수정</a></li>
+						
+						<li class="nav-item">
+						<a class="nav-link" href="/user/logout">로그아웃</a></li>
 					</c:when>
 					<c:otherwise>
-						<li class="nav-item"><a class="nav-link" href="/user/join">JOIN</a></li>
+						<li class="nav-item">
+						<a class="nav-link" href="/user/join">회원가입</a></li>
 
-						<li class="nav-item"><a class="nav-link" href="/user/login">LOGIN</a></li>
+						<li class="nav-item">
+						<a class="nav-link" href="/user/login">로그인</a></li>
 					</c:otherwise>
 				</c:choose>
 
-
-
-
 			</ul>
+			<img src="${sessionScope.principal.profile}"  class="rounded-circle my__img ml-auto" 
+			     width="30px" height="30px" onerror="javascript:this.src = '/images/unknown.jpg' " />
 		</div>
 	</nav>
 	<br />
