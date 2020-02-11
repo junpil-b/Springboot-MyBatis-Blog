@@ -30,6 +30,8 @@ import com.cos.blog.model.user.User;
 import com.cos.blog.model.user.dto.ReqJoinDto;
 import com.cos.blog.model.user.dto.ReqLoginDto;
 import com.cos.blog.service.UserService;
+import com.cos.blog.util.Script;
+
 
 @Controller
 public class UserController {
@@ -57,64 +59,53 @@ public class UserController {
 	public String logout() {
 		session.invalidate();
 		return "redirect:/";
+// 기억하기, 데이터 없이 그냥 이동
 	}
 	
-	// 인증, 동일인 체크
+// 인증, 작성자 확인
 	@GetMapping("/user/profile/{id}")
-	public  String profile(@PathVariable int id) {
+	public String profile(@PathVariable int id) {
 		
 		User principal = (User) session.getAttribute("principal");
 		
-		System.out.println("UserController : profile :  "+principal.getProfile());
-		if(principal.getId() == id) {
+		if(principal.getId() == id) { // 로그인 성공
 			return "/user/profile";
 		}else {
-			// 잘못된 접근입니다. 권한이 없습니다.
-			return "/user/login";
+			return "/user/login"; // 작성자 x, 권한 x
 		}
-	
 	}
 	
-	// form:form 사용함!!
-	@PutMapping("/user/profile")
-	public @ResponseBody String profile(
-			@RequestParam int id, 
-			@RequestParam String password,
-			@RequestParam MultipartFile profile){
-		
-		UUID uuid = UUID.randomUUID();
-		String uuidFilename = uuid+"_"+profile.getOriginalFilename();
-		
-		// nio 객체!!
-		Path filePath = Paths.get(fileRealPath+uuidFilename);
-		try {
-			Files.write(filePath, profile.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+// form:form 사용
+		@PutMapping("/user/profile")
+		public @ResponseBody String profile(
+				@RequestParam int id, 
+				@RequestParam String password,
+				@RequestParam MultipartFile profile){
+			
+			UUID uuid = UUID.randomUUID();
+			String uuidFilename = uuid+"_"+profile.getOriginalFilename();
+			
+			// nio 객체!!
+			Path filePath = Paths.get(fileRealPath+uuidFilename);
+			try {
+				Files.write(filePath, profile.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			int result = userService.수정완료(id, password, uuidFilename);
+			
+			if(result == 1) {
+				return Script.href("수정완료", "/");
+			}else {
+				return Script.back("수정실패");
+			}	
 		}
 		
-		int result = userService.수정완료(id, password, uuidFilename);
-		
-		StringBuffer sb = new StringBuffer();
-		if(result == 1) {
-			sb.append("<script>");
-			sb.append("alert('수정완료');");
-			sb.append("location.href='/';");
-			sb.append("</script>");
-			return sb.toString();
-		}else {
-			sb.append("<script>");
-			sb.append("alert('수정실패');");
-			sb.append("history.back();");
-			sb.append("</script>");
-			return sb.toString();
-		}	
-
-	}
-	
-	// 메시지 컨버터(Jackson Mapper)는 request받을 때 setter로 호출한다.
+// 메세지 컨버터는 req 받을 때 setter 호출
 	@PostMapping("/user/join")
 	public ResponseEntity<?> join(@Valid @RequestBody ReqJoinDto dto, BindingResult bindingResult) {
+// BindingResult는 null 또는 공백처리?		
 		
 		int result = userService.회원가입(dto);
 		
@@ -128,14 +119,11 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/login")
-	public ResponseEntity<?> login(
-			@Valid @RequestBody ReqLoginDto dto, 
-			BindingResult bindingResult
-			) {
+	public ResponseEntity<?> login(@Valid @RequestBody ReqLoginDto dto, BindingResult bindingResult) {
+// req 검증 필요 -> aop로 처리
+	
 		
-		// request 검증 = AOP로 처리할 예정
-		
-		// 서비스 호출
+// 서비스 호출
 		User principal = userService.로그인(dto);
 
 		if(principal != null) {
@@ -144,9 +132,5 @@ public class UserController {
 		}else {
 			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
 		}
-		
 	}
 }
-
-
-

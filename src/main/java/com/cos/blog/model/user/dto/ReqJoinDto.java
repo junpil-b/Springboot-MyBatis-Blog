@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class ReqJoinDto {
 	
 	@Pattern(regexp = "^[a-zA-Z0-9]*$", message = "유저네임에 한글이 입력될 수 없습니다.")
+// 적힌 문자만 사용 가능? -> 한글 사용 불가
 	@Size(max=15, message = "유저네임의 길이가 잘못되었습니다.")
 	@NotBlank(message = "유저네임을 입력하세요.")
 	private String username;

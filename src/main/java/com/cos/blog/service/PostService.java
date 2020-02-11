@@ -45,7 +45,6 @@ public class PostService {
 		}else {
 			return null;
 		}
-		
 	}
 	
 	public int 수정완료(ReqUpdateDto dto) {
@@ -61,7 +60,7 @@ public class PostService {
 	
 	
 	public int 삭제하기(int id) {
-		// 동일인 체크 session의 principal.id == 해당 post.id로 select한 userId값
+// 동일인 체크 session의 principal.id == 해당 post.id로 select한 userId값
 		User principal = (User) session.getAttribute("principal");
 		Post post = postRepository.findById(id);
 		

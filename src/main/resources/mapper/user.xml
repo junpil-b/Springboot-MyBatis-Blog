@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cos.blog.repository.UserRepository">
+<!-- 함수 연결,  id = 함수명  repository 참조-->
 
 	<select id="findAll" resultType="com.cos.blog.model.user.User">
 		select * from user order by id desc
@@ -30,6 +31,3 @@
 	</update>
 
 </mapper>
-
-
-

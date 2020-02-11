@@ -8,7 +8,10 @@
 <title>블로그</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/style.css" /> 
+
+
+
 </head>
 <body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -51,6 +54,7 @@
 			</ul>
 			<img src="/media/${sessionScope.principal.profile}"  class="rounded-circle my__img ml-auto" 
 			     width="30px" height="30px" onerror="javascript:this.src = '/images/unknown.jpg' " />
+
 		</div>
 	</nav>
 	<br />
