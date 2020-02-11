@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cos.blog.repository.CommentRepository">
 <!-- 함수 연결,  id = 함수명  repository 참조-->
+	
 	<select id="findByPostId" resultType="com.cos.blog.model.comment.dto.RespDetailDto">
 		select c.id, c.userId, c.postId, c.content, c.createDate, u.username 
 		from comment c inner join user u 

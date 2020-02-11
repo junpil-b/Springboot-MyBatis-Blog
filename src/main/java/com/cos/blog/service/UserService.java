@@ -3,6 +3,7 @@ package com.cos.blog.service;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,16 @@ import com.cos.blog.repository.UserRepository;
 public class UserService {
 
 	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
-	private HttpSession session;
+	private MyUserDetailService userDetailService;
 	
 	// result = 0 비정상, 1 정상, -1 DB 오류, -2 아이디 중복
+	// 트랜잭션
 	@Transactional
 	public int 회원가입(ReqJoinDto dto) {
 		try {
@@ -30,10 +35,15 @@ public class UserService {
 			if(result == 1) {
 				return ReturnCode.아이디중복;
 			}else {
+				// password 암호화하기, 안 하면 스프링이 안 받는다
+				// -> SecurityConfig BCryptPasswordEncoder
+				String encodePassword = passwordEncoder.encode(dto.getPassword());
+				dto.setPassword(encodePassword);
 				return userRepository.save(dto);
 			}
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException();
 		}
 	}
@@ -43,13 +53,14 @@ public class UserService {
 	}
 	
 	public int 수정완료(int id, String password, String profile) {
-		
-		int result = userRepository.update(id, password, profile);
+		User principal = userDetailService.getPrincipal();
+		String encodePassword = passwordEncoder.encode(password);
+		int result = userRepository.update(id, encodePassword, profile);
 		
 		if(result == 1) { // 수정 성공
 			User user = userRepository.findById(id);
-			session.setAttribute("principal", user);
-			
+			principal.setPassword(user.getPassword());
+			principal.setProfile(user.getProfile());
 			return 1;
 		}else { // 수정 실패
 			return -1;

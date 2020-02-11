@@ -30,18 +30,18 @@
 		$.ajax({
 			type: 'POST',
 			url: '/user/login',
-			data: JSON.stringify(data),
-			contentType : 'application/json; charset=utf-8',
+			data: data,
+			contentType : 'application/x-www-form-urlencoded; charset=utf-8',
 			dataType : 'json'
 		}).done(function(r){
+			console.log(r);
 			alert("로그인 성공");
 			location.href = '/';
 		}).fail(function(r){
+			console.log(r);
 			alert("로그인 실패");
 		});
 	});
-
-
 </script>
 
 <%@include file="../include/footer.jsp"%>

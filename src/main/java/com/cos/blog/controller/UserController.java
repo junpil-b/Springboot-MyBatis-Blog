@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +43,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private HttpSession session;
 	
 	@GetMapping("/user/join")
 	public String join() {
@@ -54,19 +53,11 @@ public class UserController {
 	public String login() {
 		return "/user/login";
 	}
-
-	@GetMapping("/user/logout")
-	public String logout() {
-		session.invalidate();
-		return "redirect:/";
-// 기억하기, 데이터 없이 그냥 이동
-	}
 	
 // 인증, 작성자 확인
 	@GetMapping("/user/profile/{id}")
-	public String profile(@PathVariable int id) {
+	public String profile(@PathVariable int id, @AuthenticationPrincipal User principal) {
 		
-		User principal = (User) session.getAttribute("principal");
 		
 		if(principal.getId() == id) { // 로그인 성공
 			return "/user/profile";
@@ -87,6 +78,7 @@ public class UserController {
 			
 			// nio 객체!!
 			Path filePath = Paths.get(fileRealPath+uuidFilename);
+			
 			try {
 				Files.write(filePath, profile.getBytes());
 			} catch (IOException e) {
@@ -116,21 +108,5 @@ public class UserController {
 		}else {
 			return new ResponseEntity<RespCM>(new RespCM(500, "fail"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
-	}
-	
-	@PostMapping("/user/login")
-	public ResponseEntity<?> login(@Valid @RequestBody ReqLoginDto dto, BindingResult bindingResult) {
-// req 검증 필요 -> aop로 처리
-	
-		
-// 서비스 호출
-		User principal = userService.로그인(dto);
-
-		if(principal != null) {
-			session.setAttribute("principal", principal);
-			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
-		}else {
-			return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
-		}
 	}
 }

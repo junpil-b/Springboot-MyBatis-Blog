@@ -60,12 +60,12 @@ function commentDelete(commentId){
 		dataType : 'json'
 	}).done(function(r) {
 		if (r.statusCode = 200) {
-			alert('댓글 작성 성공');
+			alert('댓글 삭제 성공');
 			$('#comment--item--'+commentId).remove();
 		} else {
-			alert('댓글 작성 실패');
+			alert('댓글 삭제 실패');
 		}
 	}).fail(function(r) {
-		alert('댓글 작성 실패');
+		alert('댓글 삭제 실패');
 	});
 }

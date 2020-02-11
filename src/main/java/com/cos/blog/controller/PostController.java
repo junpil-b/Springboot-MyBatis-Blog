@@ -1,10 +1,9 @@
 package com.cos.blog.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cos.blog.model.RespCM;
-import com.cos.blog.model.comment.Comment;
 import com.cos.blog.model.post.dto.ReqUpdateDto;
 import com.cos.blog.model.post.dto.ReqWriteDto;
 import com.cos.blog.model.user.User;
@@ -28,10 +26,6 @@ public class PostController {
 
 	@Autowired
 	private CommentService commentService;
-	
-	@Autowired
-// 인증 확인	
-	private HttpSession session;
 	
 	@Autowired
 	private PostService postService;
@@ -57,9 +51,9 @@ public class PostController {
 	
 	// 인증 체크
 		@PostMapping("/post/write")
-		public ResponseEntity<?> write(@RequestBody ReqWriteDto dto) {
+		public ResponseEntity<?> write(@RequestBody ReqWriteDto dto, @AuthenticationPrincipal User principal) {
 			
-			User principal = (User) session.getAttribute("principal");
+			
 			dto.setUserId(principal.getId());
 			
 			int result = postService.글쓰기(dto);

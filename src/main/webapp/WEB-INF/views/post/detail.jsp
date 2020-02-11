@@ -13,7 +13,7 @@
 		</div>
 		<div class="card-footer">
 
-			<c:if test="${post.userId eq sessionScope.principal.id}">
+			<c:if test="${post.userId eq principal.id}">
 				<a href="/post/update/${post.id}" class="btn btn-warning">수정</a>
 				<button id="post--delete--submit" value="${post.id}" class="btn btn-danger">삭제</button>
 			</c:if>
@@ -26,7 +26,7 @@
 	<div class="card">
 		<div class="form-group">
 			<div class="card-body">
-				<input type="hidden" id="postId" value="${post.id}" /> <input type="hidden" id="userId" value="${sessionScope.principal.id}" />
+				<input type="hidden" id="postId" value="${post.id}" /> <input type="hidden" id="userId" value="${principal.id}" />
 				<textarea class="form-control" rows="2" id="content"></textarea>
 			</div>
 			<div class="card-footer">
@@ -48,19 +48,17 @@
 				<li id="comment--item--${comment.id}" class="list-group-item d-flex justify-content-between align-items-center"> 
 					<div class="font-italic">${comment.content}</div>
 					<div class="badge badge-warning badge-pill ml-auto">${comment.username}</div>
-					<c:if test ="${comment.userId eq sessionScope.principal.id}">
+					
+					<c:if test ="${comment.userId eq principal.id}">
 					<button onclick="commentDelete(${comment.id})" class="badge badge-danger badge-pill">삭제</button>
 					</c:if>
 <!-- c if 작성자가 아니면 삭제 버튼 안 보이게 설정  -->					
 				</li>
 		 </c:forEach>
 <!--  포스트 컨트롤러  -->
-
 			</ul> 
-
 		</div>
 	</div>
-
 </div>
 
 <script src="/js/detail.js"></script>

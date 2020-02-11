@@ -2,8 +2,6 @@ package com.cos.blog.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +16,9 @@ public class CommentService {
 
 	@Autowired
 	private CommentRepository commentRepository;
-
+	
 	@Autowired
-	private HttpSession session;
+	private MyUserDetailService userDetailService;
 
 	public List<RespDetailDto> 댓글목록보기(int postId) {
 		return commentRepository.findByPostId(postId);
@@ -45,8 +43,8 @@ public class CommentService {
 		RespDetailDto comment = commentRepository.findById(id);
 
 		// 현재 접속자
-		User principal = (User) session.getAttribute("principal");
-
+		User principal = userDetailService.getPrincipal();
+		
 		if (comment.getUserId() == principal.getId()) {
 			return commentRepository.delete(id);
 		} else {
