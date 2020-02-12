@@ -20,7 +20,7 @@
 
 	<nav class="navbar navbar-expand-md bg-success navbar-dark">
 		<!-- Brand -->
-		<a class="navbar-brand" href="/">Cos</a>
+		<a class="navbar-brand" href="/">BLOG IT</a>
 
 		<!-- Toggler/collapsibe Button -->
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -44,17 +44,17 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
-						<a class="nav-link" href="/user/join">회원가입</a></li>
+						<a class="nav-link" href="/user/join">JOIN</a></li>
 
 						<li class="nav-item">
-						<a class="nav-link" href="/user/login">로그인</a></li>
+						<a class="nav-link" href="/user/login">LOGIN</a></li>
 					</c:otherwise>
 				</c:choose>
 
 			</ul>
 			<img src="/media/${sessionScope.principal.profile}"  class="rounded-circle my__img ml-auto" 
 			     width="30px" height="30px" onerror="javascript:this.src = '/images/unknown.jpg' " />
-
 		</div>
+		
 	</nav>
 	<br />

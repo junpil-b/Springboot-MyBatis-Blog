@@ -1,1 +1,2 @@
-[2020-02-11 09:50:45:38807][http-nio-8080-exec-2] WARN  com.cos.blog.aop.warn.BindingAdvice - com.cos.blog.controller.UserController.join() => 필드 : email 경고 : 이메일을 입력하세요.
+[2020-02-12 10:06:53:24335][http-nio-8080-exec-5] WARN  com.cos.blog.aop.warn.BindingAdvice - com.cos.blog.controller.UserController.join() => 필드 : email 경고 : 이메일 양식이 틀렸습니다.
+[2020-02-12 10:07:54:85474][http-nio-8080-exec-7] WARN  com.cos.blog.aop.warn.BindingAdvice - com.cos.blog.controller.UserController.join() => 필드 : email 경고 : 이메일 양식이 틀렸습니다.
